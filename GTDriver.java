@@ -39,7 +39,7 @@ public class GTDriver{
             else if(choice == 2){
                 GameTheory gt = new GameTheory();
 
-                playerSetup();
+                playerSetup(gt);
                 
             }
             else if(choice == 3){
@@ -74,7 +74,7 @@ public class GTDriver{
             "- Worst case: receive none.");
     }
 
-    public static void playerSetup(){
+    public static void playerSetup(GameTheory gt){
         Scanner scan = new Scanner(System.in);
 
         System.out.println("Please enter the name of player 1:");
@@ -96,13 +96,40 @@ public class GTDriver{
         System.out.println("Please enter a number 1-4 for player 2:");
         int stratChoice2 = scan.nextInt();
         
+        //should logic for assigning strategy to creating strategy object be in driver? 
+
 
         //create objects for players and their strategies 
-        Strategy p1 = new Strategy(p1Name, 0, 0, stratChoice1);
-        Strategy p2 = new Strategy(p1Name, 0, 0, stratChoice2);
+        Strategy p1 = createStrategy(p1Name, stratChoice1);
+        Strategy p2 = createStrategy(p2Name, stratChoice2);
+
+        //begin the game
+        gt.beginGame(p1, p2);
         
 
 
+    }
+
+
+    //assign strategy number to specific strat obj and create that strat / player obj 
+    public static Strategy createStrategy(String name, int stratChoice){
+        Boolean[] roundDecision = new Boolean[30]; // max 30 rounds
+
+        if(stratChoice == 1){ //always defect 
+            return new AlwaysDefect(name, 0, 0, 1, roundDecision);
+        }
+        else if(stratChoice == 2){ //always cooperate
+            return new AlwaysCooperate(name, 0, 0, 2, roundDecision);
+        }
+        else if(stratChoice == 3){ //tit for tat
+            return new TitForTat(name, 0, 0, 3, roundDecision);
+        }
+        else if(stratChoice == 4){ //grim trigger
+            return new GrimTrigger(name, 0, 0, 4, roundDecision);
+        }
+        else{
+            return null; //invalid choice
+        }
     }
 
     public static void strategySetup(int choice){
@@ -118,7 +145,7 @@ public class GTDriver{
     public static void strategySetupMenu(){
         System.out.println("*--Player Strategy Setup Menu--*");
 
-        System.out.println("1.) Always defect");
+        System.out.println("1.) Always defect"); 
         System.out.println("2.) Always cooperate");
         System.out.println("3.) Tit for Tat (cooperate first move)");
         System.out.println("4.) Grim trigger (cooperates but no forgiveness)");
