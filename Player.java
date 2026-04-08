@@ -4,7 +4,6 @@ public class Player{ //parent class that will have child class of strategy
     private String name; 
     private int coinTotal; 
     private int totalMovesMade; 
-    //private Strategy strat; //generate getters and setters for strat
     
 
     //empty constructor 
@@ -49,6 +48,4 @@ public class Player{ //parent class that will have child class of strategy
         this.totalMovesMade = totalMovesMade;
     }
 
-    
-    
 }
